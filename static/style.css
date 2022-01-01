@@ -1,0 +1,19 @@
+body{
+    background-image: url("pikapika.jpg");
+    background-position: left;
+}
+
+h1{
+    color: #f1174d;
+}
+
+h2{
+    color: saddlebrown;
+}
+
+.rectangle{
+    background-color: #f5dd5d;
+    text-align: center;
+    border: 5px outset black;
+    width: 500px;
+}
