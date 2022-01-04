@@ -1,6 +1,7 @@
 body{
     background-image: url("pikapika.jpg");
     background-position: left;
+
 }
 
 h1{
@@ -11,9 +12,15 @@ h2{
     color: saddlebrown;
 }
 
-.rectangle{
-    background-color: #f5dd5d;
-    text-align: center;
-    border: 5px outset black;
-    width: 500px;
+.sqr{
+    width: max-content;
+    height: max-content;
+    color: lightslategray;
+    border: 5px darkslateblue;
+}
+
+#square {
+  width: 100px;
+  height: 100px;
+  background: red;
 }

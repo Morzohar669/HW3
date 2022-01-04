@@ -5,6 +5,7 @@
     <title>Query</title>
 </head>
 <body>
+
 {% load static %}
 <link rel="stylesheet" href="{%  static 'style.css' %}">
     <a href="index.html" style="text-align: right"> Home </a>
@@ -14,6 +15,68 @@
     <a href="Add.html" style="text-align: right"> Add a Pokemon </a>
         </br>
 
- this is where the query will be
+
+<h2 style="text-align: center">Strongest pokemon that are legendary, by generation: </h2>
+<table border="1" bordercolor="black" width="40%" align="center" style="alignment: center" bgcolor="#faebd7">
+    <th>Generation</th>
+    <th>Pokemon</th>
+        {% for Pokemons in sql_res1 %}
+            <tr>
+            <td> {{ Pokemons.generation }} </td>
+            <td> {{ Pokemons.name }} </td>
+            </tr>
+        {% endfor %}
+</table>
+
+<br>
+<br>
+
+<h2 style="text-align: center">Dominant pokemon, by type: </h2>
+<table border="1" width="40%" align="center" style="alignment: center" bgcolor="#faebd7">
+    <th>Type</th>
+    <th>Pokemon</th>
+        {% for Pokemons in sql_res2 %}
+            <tr>
+            <td> {{ Pokemons.type }} </td>
+            <td> {{ Pokemons.name }} </td>
+            </tr>
+        {% endfor %}
+</table>
+
+<br>
+<br>
+
+<h2 style="text-align: center">Type with strongest Pokemon strongest then "attack Threshold"
+                                and more then "Pokemon Count" Pokemons: </h2>
+attack Threshold: <input type="text" name="attack Threshold"> <br>
+Pokemon Count: <input type="text" name="Pokemon Count"> <br>
+<button type="submit" value="Send"> Submit </button>
+
+<table border="1" width="40%" align="center" style="alignment: center" bgcolor="#faebd7">
+    <th>Type</th>
+        {% for Pokemons in sql_res3 %}
+            <tr>
+            <td> {{ Pokemons.type }} </td>
+            </tr>
+        {% endfor %}
+</table>
+
+<br>
+<br>
+
+<h2 style="text-align: center">Type with highest average instability: </h2>
+<table border="1" width="40%" align="center" style="alignment: center" bgcolor="#faebd7">
+    <th>Type</th>
+    <th>Average instability</th>
+        {% for Pokemons in sql_res4 %}
+            <tr>
+            <td> {{ Pokemons.type }} </td>
+            <td> {{ Pokemons.max_average_instability }} </td>
+            </tr>
+        {% endfor %}
+</table>
+
+
+
 </body>
 </html>
