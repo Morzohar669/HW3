@@ -19,6 +19,8 @@
 <br>
 <br>
 
+<form action = Add.html method="post">
+    {% csrf_token %}
 Name: <input type="text" name="Name"> <br>
 Type: <input type="text" name="Type"> <br>
 Generation: <input type="text" name="Generation"> <br>
@@ -28,6 +30,8 @@ Attack: <input type="text" name="Attack"> <br>
 Defense: <input type="text" name="Defense"> <br>
 
 <button type="submit" value="Send"> Submit </button>
+
+</form>
 
 </body>
 </html>
