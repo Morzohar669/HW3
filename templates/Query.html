@@ -48,9 +48,16 @@
 
 <h2 style="text-align: center">Type with strongest Pokemon strongest then "attack Threshold"
                                 and more then "Pokemon Count" Pokemons: </h2>
-attack Threshold: <input type="text" name="attack Threshold"> <br>
-Pokemon Count: <input type="text" name="Pokemon Count"> <br>
-<button type="submit" value="Send"> Submit </button>
+<form method="post" name="form" action="Query.html">
+    {% csrf_token %}
+attack Threshold: <input type="text" name="attack"> <br>
+Pokemon Count: <input type="text" name="count"> <br>
+<button name="Send" type="submit" value="Send"> Submit </button>
+</form>
+
+{% if error %}
+        {{ error }}
+    {% endif %}
 
 <table border="1" width="40%" align="center" style="alignment: center" bgcolor="#faebd7">
     <th>Type</th>

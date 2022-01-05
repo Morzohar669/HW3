@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+import Pokemons_App.views
 from Pokemons_App.models import Pokemons
 
 
@@ -39,18 +40,31 @@ def query(request):
               """
     sql_res2 = Pokemons.objects.raw(sql2)
 
-    sql3 = """
-        SELECT DISTINCT 1 as Name, Pokemons_with_amount.Type 
-        FROM (SELECT Pokemons.*, Types.type_amount
-              FROM Pokemons,
-                   (SELECT Type, COUNT(*) AS type_amount
-                    FROM Pokemons
-                    GROUP BY Type) Types
-              WHERE Pokemons.Type = Types.Type) Pokemons_with_amount
-        WHERE (Attack > 150)
-          AND (type_amount > 80);
-              """
-    sql_res3 = Pokemons.objects.raw(sql3)
+    if request.method == 'POST' and request.POST:
+        attack = request.POST["attack"]
+        count = request.POST["count"]
+
+        if int(attack) >= 0 and int(count) >= 0:
+            sql3 = f"""
+                SELECT DISTINCT 1 as Name, Pokemons_with_amount.Type 
+                FROM (SELECT Pokemons.*, Types.type_amount
+                      FROM Pokemons,
+                           (SELECT Type, COUNT(*) AS type_amount
+                            FROM Pokemons
+                            GROUP BY Type) Types
+                      WHERE Pokemons.Type = Types.Type) Pokemons_with_amount
+                WHERE (Attack > {attack})
+                  AND (type_amount > {count});
+                      """
+            sql_res3 = Pokemons.objects.raw(sql3)
+            error = ''
+        else:
+            sql_res3 = ''
+            error = """ Your input is invalid.. Please enter positive values"""
+
+    else:
+        sql_res3 = ''
+        error = ''
 
     sql4 = """
         SELECT 1 as Name, Diff_SUM.Type, FORMAT(ROUND(((Sum_Of_Diffs * 1.0) / type_amount),2),'N2') AS max_average_instability
@@ -93,7 +107,8 @@ def query(request):
     sql_res4 = Pokemons.objects.raw(sql4)
 
     return render(request, 'Query.html',
-                  {'sql_res1': sql_res1, 'sql_res2': sql_res2, 'sql_res3': sql_res3, 'sql_res4': sql_res4})
+                  {'error': error, 'sql_res1': sql_res1, 'sql_res2': sql_res2, 'sql_res3': sql_res3,
+                   'sql_res4': sql_res4})
 
 
 def add(request):
