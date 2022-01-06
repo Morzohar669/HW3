@@ -7,7 +7,7 @@ from Pokemons_App.models import Pokemons
 
 def index(request):
     return render(request, 'index.html')
-
+#sdds
 
 def query(request):
     sql1 = """
