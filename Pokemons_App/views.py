@@ -158,6 +158,11 @@ def add(request):
                                    Attack=attack,
                                    Defense=defense)
             new_content.save()
+
+
+
+            #asdasdasdasdasdadasdad
+
     return render(request, 'add.html',
                   {'name_error': name_error, 'typ_error': typ_error, 'gen_error': gen_error, 'hp_error': hp_error,
                    'attack_error': attack_error, 'defense_error': defense_error})
