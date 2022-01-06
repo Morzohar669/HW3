@@ -50,8 +50,8 @@
                                 and more then "Pokemon Count" Pokemons: </h2>
 <form method="post" name="form" action="Query.html">
     {% csrf_token %}
-attack Threshold: <input type="text" name="attack"> <br>
-Pokemon Count: <input type="text" name="count"> <br>
+attack Threshold: <input type="number" name="attack" min="0" required> <br>
+Pokemon Count: <input type="number" name="count" min="0" required> <br>
 <button name="Send" type="submit" value="Send"> Submit </button>
 </form>
 

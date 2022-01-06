@@ -21,13 +21,13 @@
 
 <form action = Add.html method="post">
     {% csrf_token %}
-Name: <input type="text" name="Name"> <br>
-Type: <input type="text" name="Type"> <br>
-Generation: <input type="text" name="Generation"> <br>
+Name: <input type="text" name="Name" maxlength="50" minlength="2" required > <br>
+Type: <input type="text" name="Type" maxlength="50" required> <br>
+Generation: <input type="number" name="Generation" min="1" max="6" required> <br>
 Legendary: <input type="checkbox" name="Legendary" CHECKED> <br>
-HP: <input type="text" name="HP"> <br>
-Attack: <input type="text" name="Attack"> <br>
-Defense: <input type="text" name="Defense"> <br>
+HP: <input type="number" name="HP" maxlength="300" required> <br>
+Attack: <input type="number" name="Attack" max="300" required> <br>
+Defense: <input type="number" name="Defense" max="300" required> <br>
 
 <button type="submit" value="Send"> Submit </button>
 

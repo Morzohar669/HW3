@@ -7,7 +7,9 @@ from Pokemons_App.models import Pokemons
 
 def index(request):
     return render(request, 'index.html')
-#sddss
+
+
+# sddss
 
 def query(request):
     sql1 = """
@@ -44,27 +46,21 @@ def query(request):
         attack = request.POST["attack"]
         count = request.POST["count"]
 
-        if int(attack) >= 0 and int(count) >= 0:
-            sql3 = f"""
-                SELECT DISTINCT 1 as Name, Pokemons_with_amount.Type 
-                FROM (SELECT Pokemons.*, Types.type_amount
-                      FROM Pokemons,
-                           (SELECT Type, COUNT(*) AS type_amount
-                            FROM Pokemons
-                            GROUP BY Type) Types
-                      WHERE Pokemons.Type = Types.Type) Pokemons_with_amount
-                WHERE (Attack > {attack})
-                  AND (type_amount > {count});
-                      """
-            sql_res3 = Pokemons.objects.raw(sql3)
-            error = ''
-        else:
-            sql_res3 = ''
-            error = """ Your input is invalid.. Please enter positive values"""
+        sql3 = f"""
+            SELECT DISTINCT 1 as Name, Pokemons_with_amount.Type 
+            FROM (SELECT Pokemons.*, Types.type_amount
+                  FROM Pokemons,
+                       (SELECT Type, COUNT(*) AS type_amount
+                        FROM Pokemons
+                        GROUP BY Type) Types
+                  WHERE Pokemons.Type = Types.Type) Pokemons_with_amount
+            WHERE (Attack > {attack})
+              AND (type_amount > {count});
+                  """
+        sql_res3 = Pokemons.objects.raw(sql3)
 
     else:
         sql_res3 = ''
-        error = ''
 
     sql4 = """
         SELECT 1 as Name, Diff_SUM.Type, FORMAT(ROUND(((Sum_Of_Diffs * 1.0) / type_amount),2),'N2') AS max_average_instability
@@ -107,7 +103,7 @@ def query(request):
     sql_res4 = Pokemons.objects.raw(sql4)
 
     return render(request, 'Query.html',
-                  {'error': error, 'sql_res1': sql_res1, 'sql_res2': sql_res2, 'sql_res3': sql_res3,
+                  {'sql_res1': sql_res1, 'sql_res2': sql_res2, 'sql_res3': sql_res3,
                    'sql_res4': sql_res4})
 
 
@@ -121,48 +117,18 @@ def add(request):
         attack = request.POST["Attack"]
         defense = request.POST["Defense"]
 
-        name_error = ""
-        typ_error = ""
-        gen_error = ""
-        hp_error = ""
-        attack_error = ""
-        defense_error = ""
+        if legendary == 'on':
+            legendary = True
+        else:
+            legendary = False
 
-        if len(name) < 2 or len(name) > 50:
-            name_error = "please enter a valid name (between 2-50 characters)"
+        new_content = Pokemons(name=name,
+                               type=typ,
+                               generation=generation,
+                               legendary=legendary,
+                               hp=hp,
+                               attack=attack,
+                               defense=defense)
+        new_content.save()
 
-        if len(typ) > 50 or len(typ) == 0:
-            typ_error = "please enter a valid type (between 1-50 characters)"
-
-        valid_gen = [1, 2, 3, 4, 5, 6]
-
-        if (int(generation) not in valid_gen) or (((float(generation)) % 1) != 0.0):
-            gen_error = "please enter a valid name (int between 1-6)"
-
-        if int(hp) == 0 or int(hp) > 300 or (((float(hp)) % 1) != 0.0):
-            hp_error = "please enter a valid hp (int between 1-300)"
-
-        if int(attack) == 0 or int(attack) > 300 or (((float(attack)) % 1) != 0.0):
-            attack_error = "please enter a valid attack (int between 1-300)"
-
-        if int(defense) == 0 or int(defense) > 300 or (((float(defense)) % 1) != 0.0):
-            defense_error = "please enter a valid defense (int between 1-300)"
-
-        if not (
-                name_error == "" or typ_error == "" or gen_error == "" or hp_error == "" or attack_error == "" or defense_error == ""):
-            new_content = Pokemons(Name=name,
-                                   Type=typ,
-                                   Generation=generation,
-                                   Legendary=legendary,
-                                   HP=hp,
-                                   Attack=attack,
-                                   Defense=defense)
-            new_content.save()
-
-
-
-            #asdasdasdasdasdadasdad
-
-    return render(request, 'add.html',
-                  {'name_error': name_error, 'typ_error': typ_error, 'gen_error': gen_error, 'hp_error': hp_error,
-                   'attack_error': attack_error, 'defense_error': defense_error})
+    return render(request, 'add.html')
