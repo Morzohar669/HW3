@@ -1,0 +1,88 @@
+Index: Pokemons_App/views.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Pokemons_App/views.py b/Pokemons_App/views.py
+--- a/Pokemons_App/views.py	(revision ab1a14013971a7b5a01e86745efdb5b48a975748)
++++ b/Pokemons_App/views.py	(revision ad1fc9732e6ad44b6e2e19d500af7d12f8ecefca)
+@@ -112,4 +112,52 @@
+ 
+ 
+ def add(request):
+-    return render(request, 'Add.html')
++    if request.method == 'POST' and request.POST:
++        name = request.POST["Name"]
++        typ = request.POST["Type"]
++        generation = request.POST["Generation"]
++        legendary = request.POST["Legendary"]
++        hp = request.POST["HP"]
++        attack = request.POST["Attack"]
++        defense = request.POST["Defense"]
++
++        name_error = ""
++        typ_error = ""
++        gen_error = ""
++        hp_error = ""
++        attack_error = ""
++        defense_error = ""
++
++        if len(name) < 2 or len(name) > 50:
++            name_error = "please enter a valid name (between 2-50 characters)"
++
++        if len(typ) > 50 or len(typ) == 0:
++            typ_error = "please enter a valid type (between 1-50 characters)"
++
++        valid_gen = [1, 2, 3, 4, 5, 6]
++
++        if (int(generation) not in valid_gen) or (((float(generation)) % 1) != 0.0):
++            gen_error = "please enter a valid name (int between 1-6)"
++
++        if int(hp) == 0 or int(hp) > 300 or (((float(hp)) % 1) != 0.0):
++            hp_error = "please enter a valid hp (int between 1-300)"
++
++        if int(attack) == 0 or int(attack) > 300 or (((float(attack)) % 1) != 0.0):
++            attack_error = "please enter a valid attack (int between 1-300)"
++
++        if int(defense) == 0 or int(defense) > 300 or (((float(defense)) % 1) != 0.0):
++            defense_error = "please enter a valid defense (int between 1-300)"
++
++        if not (
++                name_error == "" or typ_error == "" or gen_error == "" or hp_error == "" or attack_error == "" or defense_error == ""):
++            new_content = Pokemons(Name=name,
++                                   Type=typ,
++                                   Generation=generation,
++                                   Legendary=legendary,
++                                   HP=hp,
++                                   Attack=attack,
++                                   Defense=defense)
++            new_content.save()
++    return render(request, 'add.html',
++                  {'name_error': name_error, 'typ_error': typ_error, 'gen_error': gen_error, 'hp_error': hp_error,
++                   'attack_error': attack_error, 'defense_error': defense_error})
+Index: templates/Add.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/templates/Add.html b/templates/Add.html
+--- a/templates/Add.html	(revision ab1a14013971a7b5a01e86745efdb5b48a975748)
++++ b/templates/Add.html	(revision ad1fc9732e6ad44b6e2e19d500af7d12f8ecefca)
+@@ -19,6 +19,8 @@
+ <br>
+ <br>
+ 
++<form action = Add.html method="post">
++    {% csrf_token %}
+ Name: <input type="text" name="Name"> <br>
+ Type: <input type="text" name="Type"> <br>
+ Generation: <input type="text" name="Generation"> <br>
+@@ -29,5 +31,7 @@
+ 
+ <button type="submit" value="Send"> Submit </button>
+ 
++</form>
++
+ </body>
+ </html>
+\ No newline at end of file
